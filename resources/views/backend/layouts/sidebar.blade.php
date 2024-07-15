@@ -76,12 +76,12 @@
   <!--    </div>-->
   <!--</li>-->
   {{-- Products --}}
-  <li class="nav-item {{ request()->is('admin/product*') ? 'active_tab' : '' }}">
+  {{-- <li class="nav-item {{ request()->is('admin/product*') ? 'active_tab' : '' }}">
       <a class="nav-link collapsed" href="{{route('product.index')}}">
         <i class="fas fa-cubes"></i>
         <span>Products</span>
       </a>
-  </li>
+  </li> --}}
 
   {{-- Brands --}}
   <!-- <li class="nav-item">
@@ -204,11 +204,11 @@
         <span>Coupon</span></a>
   </li> -->
    <!-- Users -->
-   <li class="nav-item {{ request()->is('admin/users*') ? 'active_tab' : '' }}">
+   {{-- <li class="nav-item {{ request()->is('admin/users*') ? 'active_tab' : '' }}">
     <a class="nav-link" href="{{ route('users.index') }}">
         <i class="fas fa-users"></i>
         <span>Users</span>
-    </a>
+    </a> --}}
 </li>
 
 <!-- General settings -->
@@ -218,6 +218,7 @@
         <span>Settings</span>
     </a>
 </li>
+<br>
 
   <!-- Sidebar Toggler (Sidebar) -->
   <div class="text-center d-none d-md-inline">

@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Socialite;
 use App\User;
 use Auth;
+use Hash;
+
 class LoginController extends Controller
 {
     /*
@@ -38,7 +40,7 @@ class LoginController extends Controller
      */
 
     public function credentials(Request $request){
-        return ['email'=>$request->email,'password'=>$request->password,'status'=>'active','role'=>'admin'];
+        return ['email'=>$request->email,'password'=>$request->password,'status'=>'active','role'=>'customer'];
     }
     public function __construct()
     {
@@ -81,5 +83,24 @@ class LoginController extends Controller
             ]);
          return redirect()->route('home');
         }
+    }
+
+    public function register(Request $request)
+    {
+        return view('auth.register');
+    }
+    
+    public function storeRegister(Request $request)
+    {
+       
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = "customer";
+        $user->save();
+        return redirect('login');
+      
+        
     }
 }
