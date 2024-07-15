@@ -24,7 +24,7 @@
               <th>Order Value</th>
               <th>Wp Status</th>
                 <th>Status</th>
-              <th>Action</th>
+              {{-- <th>Action</th> --}}
             </tr>
           </thead>
           <tbody>
@@ -92,10 +92,10 @@
                             <span class="badge badge-dark ">Not Fullfilled</span>
                         @endif
                     </td>
-                    <td>
+                    {{-- <td>
                         <button type="button" class="btn btn-sm btn-info order-action-btn" data-action="fullfilled"> FullField </button>
                         <button type="button" class="btn btn-sm btn-danger order-action-btn" data-action="reject"> Reject </button>
-                    </td>
+                    </td> --}}
                 </tr>
             @endforeach
           </tbody>

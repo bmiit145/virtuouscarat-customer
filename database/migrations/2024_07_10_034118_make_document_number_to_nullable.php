@@ -25,7 +25,7 @@ class MakeDocumentNumberToNullable extends Migration
      */
     public function down()
     {
-        Schema::table('wp_products', function (Blueprint $table) {
+        Schema::table('nullable', function (Blueprint $table) {
             $table->string('document_number')->change();
         });
     }

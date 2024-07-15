@@ -11,6 +11,7 @@ use App\User;
 use PDF;
 use Notification;
 use Helper;
+use Auth;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 
@@ -23,7 +24,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=WpOrder::orderBy('order_id','DESC')->paginate(10);
+        $orders=WpOrder::orderBy('order_id','DESC')->where('billing_email', Auth::user()->email)->paginate(10);
+        // return $orders;
         return view('backend.order.index')->with('orders',$orders);
     }
 
