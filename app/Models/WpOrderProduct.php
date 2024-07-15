@@ -24,8 +24,8 @@ class WpOrderProduct extends Model
         return $this->belongsTo(WpOrder::class, 'order_id', 'order_id');
     }
 
-    public function products()
+    public function product()
     {
-        return $this->belongsTo(WpProduct::class, 'product_id', 'product_id');
+        return $this->belongsTo(WpProduct::class, 'product_id', 'wp_product_id');
     }
 }
