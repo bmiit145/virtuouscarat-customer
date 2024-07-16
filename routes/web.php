@@ -102,7 +102,7 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 
 // Backend section start
 
-Route::group(['prefix'=>'/customer','middleware'=>['auth']],function(){
+Route::group(['prefix'=>'/customer','middleware'=>['auth' , 'customer']],function(){
     Route::get('/','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');

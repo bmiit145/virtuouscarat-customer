@@ -3,19 +3,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
-class User
+class customer
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if($request->user()->role=='user'){
+        if($request->user()->role=='customer'){
             return $next($request);
         }
         else{
