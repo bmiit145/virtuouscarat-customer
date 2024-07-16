@@ -32,7 +32,10 @@ Route::Post('logout/', 'Auth\LoginController@logout')->name('login.logout');
 Route::get('register/', 'Auth\LoginController@register')->name('login.register');
 Route::post('storeRegister/', 'Auth\LoginController@storeRegister')->name('login.storeRegister');
 
-Route::get('/','FrontendController@home')->name('home');
+//Route::get('/','FrontendController@home')->name('home');
+Route::get('/', function (){
+    return redirect()->route(Auth::user() ? 'admin' : 'login');
+})->name('home');
 
 // Frontend Routes
 Route::get('/home', 'FrontendController@index');
@@ -99,7 +102,7 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 
 // Backend section start
 
-Route::group(['prefix'=>'/admin','middleware'=>['auth']],function(){
+Route::group(['prefix'=>'/customer','middleware'=>['auth']],function(){
     Route::get('/','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
@@ -183,9 +186,9 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth']],function(){
 //
 //});
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+//Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
+//});
 
 
 Route::group(['middleware' => 'auth'], function () {
