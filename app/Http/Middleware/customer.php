@@ -21,7 +21,7 @@ class customer
         }
         else{
             request()->session()->flash('error','You do not have any permission to access this page');
-            return redirect()->route('home');
+            return redirect()->route('login');
         }
     }
 }
