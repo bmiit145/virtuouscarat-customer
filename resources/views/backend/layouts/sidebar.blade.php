@@ -10,7 +10,7 @@
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin')}}">
-    <div class="sidebar-brand-text mx-3">Admin Panel</div>
+    <div class="sidebar-brand-text mx-3">Customer Panel</div>
   </a>
 
   <!-- Divider -->

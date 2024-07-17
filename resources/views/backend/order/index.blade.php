@@ -1,5 +1,6 @@
 @extends('backend.layouts.master')
 @section('main-content')
+
  <!-- DataTales Example -->
  <div class="card shadow mb-4">
      <div class="row">
@@ -22,25 +23,22 @@
                 <th>Product Name</th>
                 <th>Vendor Name</th>
               <th>Order Value</th>
-              <th>Wp Status</th>
-                <th>Status</th>
-              {{-- <th>Action</th> --}}
+              <th>Status</th>
+                <!-- <th>Status</th> -->
+              <th>Action</th> 
             </tr>
           </thead>
           <tbody>
-            @foreach($orders as $order)
-            @php
-                $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
-            @endphp
+          @foreach($orders as $order)
                 <tr data-order_id = {{ $order->order_id }}>
                     <td>{{\Carbon\Carbon::parse($order->order_date)->format('Y-m-d') }}</td>
                     <td>{{$order->order_id}}</td>
                     <td>{{$order->billing_first_name}} {{$order->billing_last_name}}</td>
                     <td>
                         @foreach($order->products as $product)
-                            @if(!$product->product)
-                                @continue
-                            @endif
+                        @if(!$product->product)
+                            @continue
+                        @endif
                             <span>{{  $product->product? $product->product->name : '' }}
                                 <sub>{{  $product->product? $product->product->sku : '' }}</sub>
                             </span><br/>
@@ -56,7 +54,7 @@
                         @endforeach
                     </td>
                     <td>${{number_format($order->total,2)}}</td>
-                    <td>
+                    <!-- <td>
                         @if($order->status=='pending-payment' || $order->status=='pending')
                           <span class="badge badge-primary">Pending payment</span>
                         @elseif($order->status=='processing')
@@ -76,22 +74,40 @@
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
-                    </td>
+                    </td> -->
                     <td>
-                        @if($order->fullfilled_status == 3)
-                            <span class="badge badge-success">Fullfilled</span>
-                        @elseif($order->fullfilled_status == 2)
-                            <span class="badge badge-info">Passed to Vendor</span>
-                        @elseif($order->fullfilled_status == 1)
-                            <span class="badge badge-secondary">Processed by Admin </span>
-                        @elseif($order->fullfilled_status == 4)
-                            <span class="badge badge-danger">Rejected by Admin</span>
-                        @elseif($order->fullfilled_status == 5)
-                            <span class="badge badge-warning">Rejected</span>
-                        @else
-                            <span class="badge badge-dark ">Not Fullfilled</span>
+                      @if($order->customer_status_show)
+                    @foreach($order->products as $product)
+                            @if(!$product->product)
+                                @continue
+                            @endif
+                          <!--  for status show of product -->
+                            @if($product->is_fullfilled == 0)
+                                <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Not Fullfilled</span>
+                            @elseif($product->is_fullfilled == 1)
+                                <span class="btn btn-sm btn-success my-1"  style="cursor:unset;">Fullfilled</span>
+                            @elseif($product->is_fullfilled == 2)
+                                <span class="btn btn-sm btn-danger my-1"  style="cursor:unset;">Rejected</span>
+                            @endif
+                            <br/>
+                        @endforeach
                         @endif
                     </td>
+                    <!-- <td>
+                        @if($order->fullfilled_status == 3)
+                            <span class="btn btn-sm btn-success" style="cursor: unset;">Fullfilled</span>
+                        @elseif($order->fullfilled_status == 2)
+                            <span class="btn btn-sm btn-info" style="cursor: unset;">In Progress</span>
+                        @elseif($order->fullfilled_status == 1)
+                            <span class="btn btn-sm btn-secondary" style="cursor: unset;">Processed by Admin </span>
+                        @elseif($order->fullfilled_status == 4)
+                            <span class="btn btn-sm btn-danger" style="cursor: unset;">Rejected by Admin</span>
+                        @elseif($order->fullfilled_status == 5)
+                            <span class="btn btn-sm btn-danger" style="cursor: unset;">Rejected</span>
+                        @else
+                            <span class="btn btn-sm btn-dark" style="cursor: unset;">Not Fullfilled</span>
+                        @endif
+                    </td> -->
                     {{-- <td>
                         <button type="button" class="btn btn-sm btn-info order-action-btn" data-action="fullfilled"> FullField </button>
                         <button type="button" class="btn btn-sm btn-danger order-action-btn" data-action="reject"> Reject </button>
