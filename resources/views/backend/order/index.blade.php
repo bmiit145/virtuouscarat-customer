@@ -45,7 +45,7 @@
 
             <tr data-order_id="{{ $order->order_id }}">
                 @if($index == 0)
-                    <td rowspan="{{ $rowspan }}">{{ \Carbon\Carbon::parse($order->order_date)->format('Y-m-d') }}</td>
+                    <td rowspan="{{ $rowspan }}">{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
                     <td rowspan="{{ $rowspan }}">{{ $order->order_id }}</td>
                     <td rowspan="{{ $rowspan }}">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
                 @endif
@@ -129,12 +129,9 @@
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
       $('#order-dataTable').DataTable( {
-            "columnDefs":[
-                {
-                    "orderable":false,
-                    "targets":[8]
-                }
-            ]
+        "paging": true,    
+            "ordering": false, 
+            "info": true       
         } );
         // Sweet alert
         function deleteData(id){
