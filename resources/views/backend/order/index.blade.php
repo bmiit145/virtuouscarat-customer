@@ -22,10 +22,11 @@
               <th>Customer Name</th>
                 <th>Product Name</th>
                 <th>Vendor Name</th>
+                <th>Product Price</th>
               <th>Order Value</th>
               <th>Status</th>
                 <!-- <th>Status</th> -->
-              <th>Action</th> 
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,11 @@
                 <td>
                     <span>{{ $product->product->vendor->name ?? '' }}</span><br/>
                 </td>
+                <td>
+                    @if($product->product)
+                        <span>₹{{ $product->price }} <sub>QTY {{ $product->quantity }}</sub></span>
+                    @endif
+                        </td>
                 @if($index == 0)
                     <td rowspan="{{ $rowspan }}">₹{{ number_format($order->total, 2) }}</td>
                 @endif
@@ -70,6 +76,8 @@
                                     <span class="btn btn-sm btn-success my-1" style="cursor:unset;">Approved</span>
                                 @elseif($product->is_fulfilled == 2)
                                     <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected</span>
+                                    @elseif($product->is_fulfilled == 4)
+                                        <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected By Admin</span>
                                     @elseif($product->is_fulfilled == 5)
                                     <span class="btn btn-sm btn-info my-1" style="cursor:unset;">Cancelled</span>
                                     @else
@@ -77,6 +85,7 @@
                                 @endif
                         @endif
                     </td>
+                    
                     @if($index == 0)
                     <td  rowspan="{{ $rowspan }}">
                         <!--  cancel button if no any order products status is 1 -->
