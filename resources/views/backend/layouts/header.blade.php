@@ -1,9 +1,11 @@
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link  rounded-circle mr-3">
+    {{-- <button id="sidebarToggleTop" class="btn btn-link  rounded-circle mr-3">
       <i class="fa fa-bars"></i>
-    </button>
+    </button> --}}
+
+    <span style="color: #2f3037;font-weight: 900 !important;">CUSTOMER PANEL</span>
 
 
     <!-- Topbar Navbar -->
@@ -30,22 +32,7 @@
       </li>
 
       {{-- Home page --}}
-      <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="{{route('home')}}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="home"  role="button">
-          <i class="fas fa-home fa-fw"></i>
-        </a>
-      </li>
-
-      <!-- Nav Item - Alerts -->
-      <li class="nav-item dropdown no-arrow mx-1">
-       @include('backend.notification.show')
-      </li>
-
-      <!-- Nav Item - Messages -->
-      <li class="nav-item dropdown no-arrow mx-1" id="messageT" data-url="{{route('messages.five')}}">
-        @include('backend.message.message')
-      </li>
-
+   
       <div class="topbar-divider d-none d-sm-block"></div>
 
       <!-- Nav Item - User Information -->
@@ -61,18 +48,12 @@
         </a>
         <!-- Dropdown - User Information -->
         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="{{route('admin-profile')}}">
-            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-            Profile
-          </a>
+         
           <a class="dropdown-item" href="{{route('change.password.form')}}">
             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
             Change Password
           </a>
-          <a class="dropdown-item" href="{{route('settings')}}">
-            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-            Settings
-          </a>
+          
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ route('login.logout') }}"
                 onclick="event.preventDefault();
