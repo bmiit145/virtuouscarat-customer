@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -136,6 +137,7 @@ Route::group(['prefix'=>'/customer','middleware'=>['auth' , 'customer']],functio
 
     // Order
     Route::resource('/order','OrderController');
+    Route::post('order/cancel/{order_id}' , 'OrderController@cancelOrder')->name('order.cancel');
     // Shipping
     Route::resource('/shipping','ShippingController');
     // Coupon

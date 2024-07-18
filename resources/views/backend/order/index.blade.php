@@ -29,92 +29,70 @@
             </tr>
           </thead>
           <tbody>
-          @foreach($orders as $order)
-                <tr data-order_id = {{ $order->order_id }}>
-                    <td>{{\Carbon\Carbon::parse($order->order_date)->format('Y-m-d') }}</td>
-                    <td>{{$order->order_id}}</td>
-                    <td>{{$order->billing_first_name}} {{$order->billing_last_name}}</td>
+    @foreach($orders as $order)
+        @php
+            // Calculate rowspan for cells that need to span multiple rows
+            $rowspan = $order->products->filter(function($product) {
+                return $product->product;
+            })->count();
+        @endphp
+
+        @foreach($order->products as $index => $product)
+            @if(!$product->product)
+                @continue
+            @endif
+
+            <tr data-order_id="{{ $order->order_id }}">
+                @if($index == 0)
+                    <td rowspan="{{ $rowspan }}">{{ \Carbon\Carbon::parse($order->order_date)->format('Y-m-d') }}</td>
+                    <td rowspan="{{ $rowspan }}">{{ $order->order_id }}</td>
+                    <td rowspan="{{ $rowspan }}">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
+                @endif
+                <td>
+                    <span>{{ $product->product->name ?? '' }}
+                        <sub>{{ $product->product->sku ?? '' }}</sub>
+                    </span><br/>
+                </td>
+                <td>
+                    <span>{{ $product->product->vendor->name ?? '' }}</span><br/>
+                </td>
+                @if($index == 0)
+                    <td rowspan="{{ $rowspan }}">₹{{ number_format($order->total, 2) }}</td>
+                @endif
                     <td>
-                        @foreach($order->products as $product)
-                        @if(!$product->product)
-                            @continue
-                        @endif
-                            <span>{{  $product->product? $product->product->name : '' }}
-                                <sub>{{  $product->product? $product->product->sku : '' }}</sub>
-                            </span><br/>
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach($order->products as $product)
-                            @if(!$product->product)
-                                @continue
-                            @endif
-                            <span>{{  $product->product? $product->product->vendor->name : '' }}
-                            </span><br/>
-                        @endforeach
-                    </td>
-                    <td>${{number_format($order->total,2)}}</td>
-                    <!-- <td>
-                        @if($order->status=='pending-payment' || $order->status=='pending')
-                          <span class="badge badge-primary">Pending payment</span>
-                        @elseif($order->status=='processing')
-                          <span class="badge badge-warning">Processing</span>
-                        @elseif($order->status=='completed')
-                          <span class="badge badge-success">Completed</span>
-                        @elseif($order->status=='on-hold')
-                          <span class="badge badge-danger">On hold</span>
-                        @elseif($order->status=='failed')
-                          <span class="badge badge-danger">Failed</span>
-                        @elseif($order->status=='draft'|| $order->status=='checkout-draft')
-                          <span class="badge badge-dark">Draft</span>
-                        @elseif($order->status=='canceled')
-                          <span class="badge badge-warning">Canceled</span>
-                        @elseif($order->status=='refunded')
-                          <span class="badge badge-info">Refunded</span>
-                        @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
-                        @endif
-                    </td> -->
-                    <td>
-                      @if($order->customer_status_show)
-                    @foreach($order->products as $product)
-                            @if(!$product->product)
-                                @continue
-                            @endif
-                          <!--  for status show of product -->
-                            @if($product->is_fullfilled == 0)
-                                <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Not Fullfilled</span>
-                            @elseif($product->is_fullfilled == 1)
-                                <span class="btn btn-sm btn-success my-1"  style="cursor:unset;">Fullfilled</span>
-                            @elseif($product->is_fullfilled == 2)
-                                <span class="btn btn-sm btn-danger my-1"  style="cursor:unset;">Rejected</span>
-                            @endif
-                            <br/>
-                        @endforeach
+                        @if($order->customer_status_show)
+                                @if(!$product->product)
+                                    @continue
+                                @endif
+                                @if($product->is_fulfilled == 0)
+                                    <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
+                                @elseif($product->is_fulfilled == 1)
+                                    <span class="btn btn-sm btn-success my-1" style="cursor:unset;">Approved</span>
+                                @elseif($product->is_fulfilled == 2)
+                                    <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected</span>
+                                    @elseif($product->is_fulfilled == 5)
+                                    <span class="btn btn-sm btn-info my-1" style="cursor:unset;">Cancelled</span>
+                                    @else
+                                    <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
+                                @endif
                         @endif
                     </td>
-                    <!-- <td>
-                        @if($order->fullfilled_status == 3)
-                            <span class="btn btn-sm btn-success" style="cursor: unset;">Fullfilled</span>
-                        @elseif($order->fullfilled_status == 2)
-                            <span class="btn btn-sm btn-info" style="cursor: unset;">In Progress</span>
-                        @elseif($order->fullfilled_status == 1)
-                            <span class="btn btn-sm btn-secondary" style="cursor: unset;">Processed by Admin </span>
-                        @elseif($order->fullfilled_status == 4)
-                            <span class="btn btn-sm btn-danger" style="cursor: unset;">Rejected by Admin</span>
-                        @elseif($order->fullfilled_status == 5)
-                            <span class="btn btn-sm btn-danger" style="cursor: unset;">Rejected</span>
-                        @else
-                            <span class="btn btn-sm btn-dark" style="cursor: unset;">Not Fullfilled</span>
+                    @if($index == 0)
+                    <td  rowspan="{{ $rowspan }}">
+                        <!--  cancel button if no any order products status is 1 -->
+                        @if($order->products->whereIn('is_fulfilled', [1 , 5])->count() == 0)
+                            <form method="POST" action="{{route('order.cancel',[$order->order_id])}}">
+                                @csrf
+                                <button class="dltBtn" data-id="{{$order->order_id}}" style="border:0px; background-color:transparent;" title="Delete"><i class="fas fa-trash"></i></button>
+                            </form>
                         @endif
-                    </td> -->
-                    {{-- <td>
-                        <button type="button" class="btn btn-sm btn-info order-action-btn" data-action="fullfilled"> FullField </button>
-                        <button type="button" class="btn btn-sm btn-danger order-action-btn" data-action="reject"> Reject </button>
-                    </td> --}}
-                </tr>
-            @endforeach
-          </tbody>
+                    </td>
+                    @endif
+                  </tr>
+        @endforeach
+    @endforeach
+</tbody>
+
         </table>
         <span style="float:right">{{$orders->links()}}</span>
         @else
@@ -167,7 +145,7 @@
               e.preventDefault();
               swal({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this data!",
+                    text: "Once deleted, you will not be able to recover this order!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -176,7 +154,7 @@
                     if (willDelete) {
                        form.submit();
                     } else {
-                        swal("Your data is safe!");
+                        swal("Your order is safe!");
                     }
                 });
           })
