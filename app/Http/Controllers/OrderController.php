@@ -24,7 +24,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=WpOrder::orderBy('order_date','DESC')->where('billing_email', Auth::user()->email)->paginate(10);
+        $orders=WpOrder::orderBy('order_date','DESC')
+        ->where('billing_email', Auth::user()->email)->paginate(10);
         // return $orders;
         return view('backend.order.index')->with('orders',$orders);
     }
