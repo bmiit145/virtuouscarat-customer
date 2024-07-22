@@ -70,19 +70,25 @@
                                 @if(!$product->product)
                                     @continue
                                 @endif
-                                @if($product->is_fulfilled == 0)
-                                    <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
-                                @elseif($product->is_fulfilled == 1)
-                                    <span class="btn btn-sm btn-success my-1" style="cursor:unset;">Approved</span>
-                                @elseif($product->is_fulfilled == 2)
-                                    <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected</span>
+
+                                    @if($product->is_fulfilled == 0)
+                                        <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
+                                    @elseif($product->is_fulfilled == 1)
+                                        <span class="btn btn-sm btn-success my-1" style="cursor:unset;">Approved</span>
+                                    @elseif($product->is_fulfilled == 2)
+                                        <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected</span>
                                     @elseif($product->is_fulfilled == 4)
                                         <span class="btn btn-sm btn-danger my-1" style="cursor:unset;">Rejected By Admin</span>
                                     @elseif($product->is_fulfilled == 5)
-                                    <span class="btn btn-sm btn-info my-1" style="cursor:unset;">Cancelled</span>
+                                        <span class="btn btn-sm btn-info my-1" style="cursor:unset;">Cancelled</span>
                                     @else
                                     <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
                                 @endif
+
+                            @else
+
+                            <span class="btn btn-sm btn-warning my-1" style="cursor:unset;">Pending</span>
+
                         @endif
                     </td>
 
