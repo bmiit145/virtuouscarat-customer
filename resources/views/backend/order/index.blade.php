@@ -85,11 +85,11 @@
                                 @endif
                         @endif
                     </td>
-                    
+
                     @if($index == 0)
                     <td  rowspan="{{ $rowspan }}">
                         <!--  cancel button if no any order products status is 1 -->
-                        @if($order->products->whereIn('is_fulfilled', [1 , 5])->count() == 0)
+                        @if($order->products->whereIn('is_fulfilled', [1 , 4 , 5])->count() == 0)
                             <form method="POST" action="{{route('order.cancel',[$order->order_id])}}">
                                 @csrf
                                 <button class="dltBtn" data-id="{{$order->order_id}}" style="border:0px; background-color:transparent;" title="Delete"><i class="fas fa-trash"></i></button>
@@ -129,9 +129,9 @@
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
       $('#order-dataTable').DataTable( {
-        "paging": true,    
-            "ordering": false, 
-            "info": true       
+        "paging": true,
+            "ordering": false,
+            "info": true
         } );
         // Sweet alert
         function deleteData(id){

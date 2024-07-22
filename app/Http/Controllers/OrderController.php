@@ -24,7 +24,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=WpOrder::orderBy('order_date','DESC')->where('billing_email', Auth::user()->email)->paginate(10);
+        $orders=WpOrder::where('status','!=','checkout-draft')
+            ->orderBy('order_date','DESC')
+            ->orderBy('order_id','DESC')
+            ->where('billing_email', Auth::user()->email)->paginate(10);
         // return $orders;
         return view('backend.order.index')->with('orders',$orders);
     }
@@ -250,7 +253,7 @@ class OrderController extends Controller
         }
     }
 
-    // cancel Order 
+    // cancel Order
     public function cancelOrder($order_id){
         $order=WpOrder::where('order_id' ,$order_id)->first();
         if($order){
@@ -270,7 +273,7 @@ class OrderController extends Controller
              else{
                  request()->session()->flash('error','Order can not deleted');
              }
- 
+
              return redirect()->route('order.index');
          }
          else{
