@@ -1,6 +1,19 @@
 @extends('backend.layouts.master')
 @section('main-content')
+<style>
+    /* Apply a hover effect to all rows with the same data-order_id */
+    .table tbody tr {
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+    }
 
+    .table tbody tr:hover {
+        background-color: #f1f1f1; /* Light grey background on hover */
+    }
+
+    .table tbody tr.highlight-hover {
+        background-color: #f1f1f1; /* Light grey background on hover */
+    }
+</style>
  <!-- DataTales Example -->
  <div class="card shadow mb-4">
      <div class="row">
@@ -202,4 +215,16 @@
             });
         });
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('tr').hover(function() {
+            var orderId = $(this).data('order_id');
+            $('tr[data-order_id="' + orderId + '"]').addClass('highlight-hover');
+        }, function() {
+            var orderId = $(this).data('order_id');
+            $('tr[data-order_id="' + orderId + '"]').removeClass('highlight-hover');
+        });
+    });
+</script>
 @endpush
