@@ -56,6 +56,16 @@
                 @continue
             @endif
 
+            @if($product->product)
+                @php
+                    $productAttributes = $product->product->attributes->pluck('value','name');
+                    $ProdColor = $productAttributes->get('Color', '');
+                    $prodClarity = $productAttributes->get('Clarity', '');
+                    $prodCut = $productAttributes->get('Cut', '');
+                    $prodMeasurement = $productAttributes->get('Measurement', '');
+                @endphp
+            @endif
+
             <tr data-order_id="{{ $order->order_id }}">
                 @if($index == 0)
                     <td rowspan="{{ $rowspan }}">{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
