@@ -60,10 +60,10 @@
                                         Login
                                     </button>
                                 </form>
-                                Are you new?
-                                <a class="btn btn-link small" href="{{ url('register') }}">
-                                    {{ __('Creat an Account') }}
-                                </a>
+{{--                                Are you new?--}}
+{{--                                <a class="btn btn-link small" href="{{ url('register') }}">--}}
+{{--                                    {{ __('Creat an Account') }}--}}
+{{--                                </a>--}}
                                 {{-- <hr> --}}
 
                                 {{-- <div class="text-center">
