@@ -1,4 +1,4 @@
-{{-- <style>
+<style>
      .nav-item.active .nav-link {
     color: #fff;
     background-color: #233766;
@@ -14,13 +14,13 @@
     background-size: cover;
 }
 .sidebar.toggled .sidebar-logo2 {
-        display: block !important;
+        /* display: block !important; */
     }
     .sidebar.toggled .sidebar-logo1 {
-        display: none;
+        /* display: none; */
     }
 </style>
-<ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center " href="{{route('admin')}}">
@@ -30,14 +30,14 @@
 
 
   <!-- Divider -->
-  <hr class="sidebar-divider my-0">
+  <!-- <hr class="sidebar-divider my-0"> -->
 
-  <li class="nav-item {{ request()->routeIs('admin') ? 'active' : '' }}">
+  <!-- <li class="nav-item {{ request()->routeIs('admin') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('admin') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
       </a>
-  </li>
+  </li> -->
 
   <hr class="sidebar-divider">
 
@@ -51,4 +51,4 @@
     </a>
 </li>
 
-</ul> --}}
+</ul> 

@@ -63,18 +63,22 @@
                     <td rowspan="{{ $rowspan }}">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
                 @endif
                 <td>
-                    <span>{{ $product->product->name ?? '' }}
-                        <sub>{{ $product->product->sku ?? '' }}</sub>
-                    </span><br/>
+                    @if($product->product)
+                        <span>{{ $product->product->sku ?? '' }} <br>
+                        <span>{{ $product->product->name }}</span>
+                        <span>( Color : {{$ProdColor . ', Clarity : ' . $prodClarity . ', Cut : ' . $prodCut . ', Measurement : ' . $prodMeasurement}} )</span> </td>
+                    @endif
                 </td>
                 <td>
                     <span>{{ $product->product->vendor->name ?? '' }}</span><br/>
                 </td>
+                
                 <td>
                     @if($product->product)
                         <span>₹{{ $product->price }} <sub>QTY {{ $product->quantity }}</sub></span>
                     @endif
-                        </td>
+                </td>
+
                 @if($index == 0)
                     <td rowspan="{{ $rowspan }}">₹{{ number_format($order->total, 2) }}</td>
                 @endif
@@ -112,6 +116,9 @@
                             <form method="POST" action="{{route('order.cancel',[$order->order_id])}}">
                                 @csrf
                                 <button class="dltBtn" data-id="{{$order->order_id}}" style="border:0px; background-color:transparent;" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="returnBtn" data-id="{{ $order->order_id }}" style="border:0px; background-color:transparent;" title="Return">
+                                    <i class="fas fa-undo-alt"></i> 
+                                </button>
                             </form>
                         @endif
                     </td>
