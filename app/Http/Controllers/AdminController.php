@@ -12,6 +12,9 @@ use Spatie\Activitylog\Models\Activity;
 class AdminController extends Controller
 {
     public function index(){
+
+        return redirect()->route('order.index');
+
         $data = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("DAYNAME(created_at) as day_name"), \DB::raw("DAY(created_at) as day"))
         ->where('created_at', '>', Carbon::today()->subDay(6))
         ->groupBy('day_name','day')
@@ -86,9 +89,9 @@ class AdminController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-   
+
         return redirect()->route('admin')->with('success','Password successfully changed');
     }
 

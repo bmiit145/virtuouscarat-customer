@@ -32,9 +32,9 @@
             <tr>
                 <th>Order Date</th>
               <th>Order No.</th>
-              <th>Customer Name</th>
+{{--              <th>Customer Name</th>--}}
                 <th>Product Name</th>
-                <th>Vendor Name</th>
+{{--                <th>Vendor Name</th>--}}
                 <th>Product Price</th>
               <th>Order Value</th>
               <th>Status</th>
@@ -70,7 +70,7 @@
                 @if($index == 0)
                     <td rowspan="{{ $rowspan }}">{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
                     <td rowspan="{{ $rowspan }}">{{ $order->order_id }}</td>
-                    <td rowspan="{{ $rowspan }}">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
+{{--                    <td rowspan="{{ $rowspan }}">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>--}}
                 @endif
                 <td>
                     @if($product->product)
@@ -79,10 +79,11 @@
                         <span>( Color : {{$ProdColor . ', Clarity : ' . $prodClarity . ', Cut : ' . $prodCut . ', Measurement : ' . $prodMeasurement}} )</span> </td>
                     @endif
                 </td>
-                <td>
-                    <span>{{ $product->product->vendor->name ?? '' }}</span><br/>
-                </td>
-                
+
+{{--                <td>--}}
+{{--                    <span>{{ $product->product->vendor->name ?? '' }}</span><br/>--}}
+{{--                </td>--}}
+
                 <td>
                     @if($product->product)
                         <span>₹{{ $product->price }} <sub>QTY {{ $product->quantity }}</sub></span>
@@ -127,7 +128,7 @@
                                 @csrf
                                 <button class="dltBtn" data-id="{{$order->order_id}}" style="border:0px; background-color:transparent;" title="Delete"><i class="fas fa-trash"></i></button>
                                 <button class="returnBtn" data-id="{{ $order->order_id }}" style="border:0px; background-color:transparent;" title="Return">
-                                    <i class="fas fa-undo-alt"></i> 
+                                    <i class="fas fa-undo-alt"></i>
                                 </button>
                             </form>
                         @endif
