@@ -24,6 +24,13 @@ Route::get('user/register','FrontendController@register')->name('register.form')
 Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
 // Reset password
 //Route::post('password-reset', 'FrontendController@showResetForm')->name('password.reset');
+
+
+Route::get('/showPassword/{token}', 'Auth\LoginController@showPassword')->name('login.showPassword');
+Route::post('/updatePassword/{id}', 'Auth\LoginController@updatePassword')->name('login.updatePassword');
+
+
+
 // Socialite
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
@@ -101,6 +108,11 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 
 
 
+// Password Change
+Route::get('change-password/{token?}', 'AdminController@changePassword')->name('change.password.form');
+Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
+
+
 // Backend section start
 
 Route::group(['prefix'=>'/customer','middleware'=>['auth' , 'customer']],function(){
@@ -150,9 +162,6 @@ Route::group(['prefix'=>'/customer','middleware'=>['auth' , 'customer']],functio
     Route::get('/notification/{id}','NotificationController@show')->name('admin.notification');
     Route::get('/notifications','NotificationController@index')->name('all.notification');
     Route::delete('/notification/{id}','NotificationController@delete')->name('notification.delete');
-    // Password Change
-    Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
-    Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
 });
 
 
