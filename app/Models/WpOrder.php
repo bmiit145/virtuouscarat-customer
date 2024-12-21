@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WpOrder extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'wp_orders';
 
@@ -17,6 +19,7 @@ class WpOrder extends Model
         'fullfilled_status',
         'currency',
         'total',
+        'customer_status_show',
         'order_date',
         'created_at',
         'updated_at',
@@ -76,9 +79,9 @@ class WpOrder extends Model
     public $timestamps = true;
 
 
-    public function products()
-    {
-        return $this->hasMany(WpOrderProduct::class, 'order_id', 'order_id');
-    }
+        public function products()
+        {
+            return $this->hasMany(WpOrderProduct::class, 'order_id', 'order_id');
+        }
 
 }

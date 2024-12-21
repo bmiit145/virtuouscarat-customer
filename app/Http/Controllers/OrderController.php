@@ -24,7 +24,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=WpOrder::orderBy('order_id','DESC')->where('billing_email', Auth::user()->email)->paginate(10);
+        $orders=WpOrder::where('status','!=','checkout-draft')
+            ->orderBy('order_date','DESC')
+            ->orderBy('order_id','DESC')
+            ->where('billing_email', Auth::user()->email)->paginate(10);
         // return $orders;
         return view('backend.order.index')->with('orders',$orders);
     }
@@ -230,8 +233,10 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $order=Order::find($id);
+        $order=WpOrder::find($id);
         if($order){
+           // softdelete a order
+           $order->products()->delete();
             $status=$order->delete();
             if($status){
                 request()->session()->flash('success','Order Successfully deleted');
@@ -239,6 +244,7 @@ class OrderController extends Controller
             else{
                 request()->session()->flash('error','Order can not deleted');
             }
+
             return redirect()->route('order.index');
         }
         else{
@@ -247,6 +253,34 @@ class OrderController extends Controller
         }
     }
 
+    // cancel Order
+    public function cancelOrder($order_id){
+        $order=WpOrder::where('order_id' ,$order_id)->first();
+        if($order){
+        // change status to 5 for all product
+            // $order->products()->is_fulfilled = 5;  // for cancelled by customer
+            foreach ($order->products as $product) {
+                $product->is_fulfilled = 5;  // Cancelled by customer
+                $product->save();
+            }
+            $order->fullfilled_status = 7; // for cancelled order
+             $status= $order->save();
+
+             if($status){
+                // $res = updateOrderStatusInWooCommerce($order_id, "cancelled");
+                request()->session()->flash('success','Order Successfully deleted');
+             }
+             else{
+                 request()->session()->flash('error','Order can not deleted');
+             }
+
+             return redirect()->route('order.index');
+         }
+         else{
+             request()->session()->flash('error','Order can not found');
+             return redirect()->back();
+         }
+    }
     public function orderTrack(){
         return view('frontend.pages.order-track');
     }

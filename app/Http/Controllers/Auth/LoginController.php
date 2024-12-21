@@ -10,6 +10,7 @@ use Socialite;
 use App\User;
 use Auth;
 use Hash;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -44,7 +45,7 @@ class LoginController extends Controller
     }
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');   
+        $this->middleware('guest')->except('logout');
     }
 
     public function logout(Request $request)
@@ -64,7 +65,7 @@ class LoginController extends Controller
         // dd($provider);
         return Socialite::driver($provider)->redirect();
     }
- 
+
     public function Callback($provider)
     {
         $userSocial =   Socialite::driver($provider)->stateless()->user();
@@ -89,18 +90,63 @@ class LoginController extends Controller
     {
         return view('auth.register');
     }
-    
+
     public function storeRegister(Request $request)
     {
-       
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = "customer";
+
         $user->save();
         return redirect('login');
-      
-        
     }
+
+
+    public function showPassword($token)
+    {
+        $user = User::where('remember_token', $token)->first();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Invalid token');
+        }
+        return view('auth.password' , compact('user'));
+    }
+
+    public function updatePassword(Request $request , $id)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = User::findOrFail($id);
+        if ($request->remember_token != $user->remember_token) {
+            return redirect()->route('login')->with('error', 'Invalid token');
+        }
+
+        // Update the password
+        $user->password = Hash::make($request->password);
+        $user->remember_token = null;
+        $user->update();
+
+        return redirect()->route('login');
+    }
+
 }
